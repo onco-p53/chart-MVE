@@ -21,12 +21,17 @@ tank1.df <- read_csv("39567301.CSV",
                      show_col_types = FALSE)
 glimpse(tank1.df)
 
+#load tank 2 data
+tank2.df <- read_csv("39560201.CSV",
+                     guess_max = Inf,
+                     show_col_types = FALSE)
+glimpse(tank2.df)
+
 
 #load tank 3 data
 tank3.df <- read_csv("39561501.CSV",
                                 guess_max = Inf,
                                 show_col_types = FALSE)
-
 glimpse(tank3.df)
 
 # ==== Clean the raw Data ====
@@ -62,6 +67,31 @@ tank1lite.df |>
 
 ## Tank 2 ----------------------------------------------------------
 
+tank2clean.df <- tank2.df  |> 
+  slice(1:(n() - 97)) |> # cuts off early values from factory (was 40)
+  filter(!is.na(Level)) |> # removes change parameter lines
+  filter(User == "0") |> # restrict to the main user
+  mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
+  mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |> 
+  mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
+  mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
+  mutate(date_time = dmy_hms(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
+  mutate(tank = "Tank 2") |> 
+  glimpse()
+
+tail(tank2clean.df) #use this to make sure the data starts at the right place
+
+#this code selects only the columns we care about and reconverts to the right format
+tank2lite.df <- tank2clean.df  |>
+  select("tank", "date_time","Temp_top", "Temp_bottom", "Level", "Usage", "Status") |>
+  mutate(Status = str_remove_all(Status, "ZO")) |> #removing level zeroing status
+  type_convert() |> 
+  glimpse()
+
+skim(tank2lite.df)
+
+tank2lite.df |> 
+  write_csv(file='./outputs/tank2.csv')
 
 ## Tank 3 ----------------------------------------------------------
 
@@ -90,13 +120,35 @@ tank3lite.df <- tank3clean.df  |>
 tank3lite.df |> 
 write_csv(file='./outputs/tank3.csv') 
 
-# ============ Plot data ================
+# ==== Plot data ====
 
 ## Tank 1 ----------------------------------------------------------
 
 
+#usage
+ggplot(tank1lite.df, aes(x= date_time, y = Usage)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage per day of Tank 1") +
+  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
+  geom_text(aes(x = date_time, y = 20, label = Status), 
+            position = position_jitter(width=0, height=20)) +
+  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+ggsave(file='./outputs/tank1-usage.png', width=8, height=6)
+
 ## Tank 2 ----------------------------------------------------------
 
+
+#usage
+ggplot(tank2lite.df, aes(x= date_time, y = Usage)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage per day of Tank 2") +
+  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
+  geom_text(aes(x = date_time, y = 20, label = Status), 
+            position = position_jitter(width=0, height=20)) +
+  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+ggsave(file='./outputs/tank2-usage.png', width=8, height=6)
 
 ## Tank 3 ----------------------------------------------------------
 
@@ -144,6 +196,30 @@ ggplot(tank3lite.df, aes(x= date_time, y = Usage)) +
             position = position_jitter(width=0, height=20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
 ggsave(file='./outputs/tank3-usage.png', width=8, height=6)
+
+
+
+# Combined plots ----------------------------------------------------------
+
+## Combine data frames ----------------------------------------------------
+
+## Nitrogen usage ---------------------------------------------------------
+
+#plot nitrogen usage of all three tanks on one chart
+
+ggplot(combined.df, aes(x= date_time, y = Usage)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage per day") +
+  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
+  geom_text(aes(x = date_time, y = 20, label = Status), 
+            position = position_jitter(width=0, height=20)) +
+  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+ggsave(file='./outputs/tank3-usage.png', width=8, height=6)
+
+
+
+
 
 
 
