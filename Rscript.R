@@ -201,6 +201,9 @@ ggsave(file='./outputs/tank3-usage.png', width=8, height=6)
 
 # Combined plots ----------------------------------------------------------
 
+combined.df <- bind_rows(tank1lite.df,tank2lite.df) |> 
+  bind_rows(tank3lite.df)
+
 ## Combine data frames ----------------------------------------------------
 
 ## Nitrogen usage ---------------------------------------------------------
@@ -215,7 +218,7 @@ ggplot(combined.df, aes(x= date_time, y = Usage)) +
   geom_text(aes(x = date_time, y = 20, label = Status), 
             position = position_jitter(width=0, height=20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
-ggsave(file='./outputs/tank3-usage.png', width=8, height=6)
+ggsave(file='./outputs/tank-combined-usage.png', width=8, height=6)
 
 
 
