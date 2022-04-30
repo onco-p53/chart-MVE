@@ -40,7 +40,7 @@ glimpse(tank3.df)
 ## Tank 1 ----------------------------------------------------------
 
 tank1clean.df <- tank1.df  |>
-  slice(1:(n() - 64)) |> # cuts off early values from factory (was 40)
+  slice(1:(n() - 109)) |> # cuts off early values from factory and cooling
   filter(!is.na(Level)) |> # removes change parameter lines
   filter(User == "0") |> # restrict to the main user
   mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
@@ -74,7 +74,7 @@ tank1lite.df |>
 ## Tank 2 ----------------------------------------------------------
 
 tank2clean.df <- tank2.df  |>
-  slice(1:(n() - 67)) |> # cuts off early values from factory (was 40)
+  slice(1:(n() - 119)) |> # cuts off early values from factory and cooling
   filter(!is.na(Level)) |> # removes change parameter lines
   filter(User == "0") |> # restrict to the main user
   mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
@@ -109,7 +109,7 @@ tank2lite.df |>
 
 
 tank3clean.df <- tank3.df  |>
-  slice(1:(n() - 67)) |> # cuts off early values from factory (was 40)
+  slice(1:(n() - 110)) |> # cuts off early values from factory and cooling
   filter(!is.na(Level)) |> # removes change parameter lines
   filter(User == "11") |> # restrict to the main user
   mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
@@ -245,7 +245,8 @@ ggplot(combined.df, aes(x = date_time, y = Usage, colour = tank)) +
   labs(title = "Nitrogen usage per day") +
   labs(x = "Date", y =  "usage (mm/day)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b") +
+  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b",
+                   limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-usage.png',
        width = 8,
@@ -258,7 +259,8 @@ ggplot(combined.df, aes(x = date_time, y = Temp_top, colour = tank)) +
   labs(title = "Top tank temperature") +
   labs(x = "Date", y =  "degrees (°C)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b") +
+  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b",
+                   limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-temp-top.png',
        width = 8,
@@ -269,11 +271,77 @@ ggsave(file = './outputs/tank-combined-temp-top.png',
 
 ggplot(combined.df, aes(x = date_time, y = Level, colour = tank)) +
   theme_bw() +
-  labs(title = "Top tank temperature") +
-  labs(x = "Date", y =  "degrees (°C)") +
+  labs(title = "Nitrogen levels") +
+  labs(x = "Date", y =  "level (mm)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b") +
+  scale_x_datetime(
+    date_breaks = "4 days",
+    date_labels = "%d %b") +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-levels.png',
        width = 8,
        height = 6)
+
+
+# Stats ----------------------------------------------------------
+
+#Somehow want to have time between fills
+
+
+# extract all fills
+
+tank2fills.df <- tank2lite.df |> 
+  filter(Status == "F") |> 
+  select("tank",
+         "date_time",
+         "Status")
+
+tank2fills.df |>
+write_csv(file = './outputs/tank2fills.csv')
+
+
+
+
+
+# calculate times
+
+
+int <- interval(as_datetime("2022-04-24 09:29:00"), as_datetime("2022-04-28 14:35:00"))
+time_length(int, "day")
+
+int2 <- interval(ymd_hms("2022-04-24 09:29:00"), ymd_hms("2022-04-28 14:35:00"))
+time_length(int2, "day")
+
+
+# Example of difference between intervals and durations
+int <- interval(ymd("1900-01-01"), ymd("1999-12-31"))
+time_length(int, "year")
+time_length(as.duration(int), "year")
+
+
+tank2fills.df |> 
+  interval(ymd_hms(date_time))
+time_length(int2, "day")
+
+
+
+488+568+609+672
+
+365/4
+
+
+
+
+# this is a loop that works
+tank2fills.df
+
+# using for loop to iterate
+# over each string in the vector
+for (day in tank2fills.df$date_time)
+{
+  
+  # displaying each string in the vector
+  print(day)
+}
+
+
