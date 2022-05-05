@@ -16,20 +16,20 @@ R.version.string #check version
 # ==== Load data ====
 
 #load tank 1 data
-tank1.df <- read_csv("39567301.CSV",
+tank1.df <- read_csv("39567302.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank1.df)
 
 #load tank 2 data
-tank2.df <- read_csv("39560201.CSV",
+tank2.df <- read_csv("39560202.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank2.df)
 
 
 #load tank 3 data
-tank3.df <- read_csv("39561501.CSV",
+tank3.df <- read_csv("39561502.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank3.df)
