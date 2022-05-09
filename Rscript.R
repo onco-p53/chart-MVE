@@ -10,26 +10,26 @@ library(skimr)
 library(janitor)
 library(ggrepel)
 
-#the code REQUIRES R 4.2 or greater due to UTF-8
+#the code *REQUIRES* R 4.2 or greater due to UTF-8
 R.version.string #check version
 
 # ==== Load data ====
 
 #load tank 1 data
-tank1.df <- read_csv("39567302.CSV",
+tank1.df <- read_csv("39567303.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank1.df)
 
 #load tank 2 data
-tank2.df <- read_csv("39560202.CSV",
+tank2.df <- read_csv("39560204.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank2.df)
 
 
 #load tank 3 data
-tank3.df <- read_csv("39561502.CSV",
+tank3.df <- read_csv("39561503.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank3.df)
@@ -301,47 +301,5 @@ write_csv(file = './outputs/tank2fills.csv')
 
 
 
-
-
-# calculate times
-
-
-int <- interval(as_datetime("2022-04-24 09:29:00"), as_datetime("2022-04-28 14:35:00"))
-time_length(int, "day")
-
-int2 <- interval(ymd_hms("2022-04-24 09:29:00"), ymd_hms("2022-04-28 14:35:00"))
-time_length(int2, "day")
-
-
-# Example of difference between intervals and durations
-int <- interval(ymd("1900-01-01"), ymd("1999-12-31"))
-time_length(int, "year")
-time_length(as.duration(int), "year")
-
-
-tank2fills.df |> 
-  interval(ymd_hms(date_time))
-time_length(int2, "day")
-
-
-
-488+568+609+672
-
-365/4
-
-
-
-
-# this is a loop that works
-tank2fills.df
-
-# using for loop to iterate
-# over each string in the vector
-for (day in tank2fills.df$date_time)
-{
-  
-  # displaying each string in the vector
-  print(day)
-}
 
 
