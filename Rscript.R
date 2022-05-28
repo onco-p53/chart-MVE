@@ -16,20 +16,20 @@ R.version.string #check version
 # ==== Load data ====
 
 #load tank 1 data
-tank1.df <- read_csv("39567303.CSV",
+tank1.df <- read_csv("39567300.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank1.df)
 
 #load tank 2 data
-tank2.df <- read_csv("39560204.CSV",
+tank2.df <- read_csv("39560200.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank2.df)
 
 
 #load tank 3 data
-tank3.df <- read_csv("39561503.CSV",
+tank3.df <- read_csv("39561500.CSV",
                      guess_max = Inf,
                      show_col_types = FALSE)
 glimpse(tank3.df)
@@ -274,6 +274,7 @@ ggplot(combined.df, aes(x = date_time, y = Level, colour = tank)) +
   labs(title = "Nitrogen levels") +
   labs(x = "Date", y =  "level (mm)") +
   geom_line(size = 1) +
+  geom_hline(yintercept = 210) +
   scale_x_datetime(
     date_breaks = "4 days",
     date_labels = "%d %b") +
