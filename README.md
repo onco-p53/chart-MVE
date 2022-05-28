@@ -27,5 +27,5 @@ Default logging is every 4 hours.
 | LL         | Low Level Alarm                 |
 | LO         | Lid Open Alarm                  |
 | PF         | Power Failure                   |
-| US         | Liquid Usage Alarm              |
+| UW         | Liquid Usage Warning Alarm      |
 | ZO         | Level Zeroing                   |
