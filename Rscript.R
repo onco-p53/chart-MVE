@@ -49,6 +49,7 @@ tank1clean.df <- tank1.df  |>
   mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
   mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns
   mutate(tank = "Tank 1") |>
+  clean_names() |>
   glimpse()
 
 tail(tank1clean.df) #use this to make sure the data starts at the right place
@@ -57,12 +58,12 @@ tail(tank1clean.df) #use this to make sure the data starts at the right place
 tank1lite.df <- tank1clean.df  |>
   select("tank",
          "date_time",
-         "Temp_top",
-         "Temp_bottom",
-         "Level",
-         "Usage",
-         "Status") |>
-  mutate(Status = str_remove_all(Status, "ZO")) |> #removing level zeroing status
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
   type_convert() |>
   glimpse()
 
@@ -83,6 +84,7 @@ tank2clean.df <- tank2.df  |>
   mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
   mutate(date_time = dmy_hms(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
   mutate(tank = "Tank 2") |>
+  clean_names() |>
   glimpse()
 
 tail(tank2clean.df) #use this to make sure the data starts at the right place
@@ -91,12 +93,12 @@ tail(tank2clean.df) #use this to make sure the data starts at the right place
 tank2lite.df <- tank2clean.df  |>
   select("tank",
          "date_time",
-         "Temp_top",
-         "Temp_bottom",
-         "Level",
-         "Usage",
-         "Status") |>
-  mutate(Status = str_remove_all(Status, "ZO")) |> #removing level zeroing status
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
   type_convert() |>
   glimpse()
 
@@ -118,6 +120,7 @@ tank3clean.df <- tank3.df  |>
   mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
   mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns
   mutate(tank = "Tank 3") |>
+  clean_names() |>
   glimpse()
 
 tail(tank3clean.df) #use this to make sure the data starts at the right place
@@ -126,12 +129,12 @@ tail(tank3clean.df) #use this to make sure the data starts at the right place
 tank3lite.df <- tank3clean.df  |>
   select("tank",
          "date_time",
-         "Temp_top",
-         "Temp_bottom",
-         "Level",
-         "Usage",
-         "Status") |>
-  mutate(Status = str_remove_all(Status, "ZO")) |> #removing level zeroing status
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
   type_convert() |>
   glimpse()
 
@@ -301,6 +304,21 @@ tank2fills.df |>
 write_csv(file = './outputs/tank2fills.csv')
 
 
+# From Aaron H --------------------------------------------------------
+
+fill = tank2lite.df %>%
+  filter(status == "F") %>% 
+  arrange(date_time) %>% 
+  mutate(fill_days = c(NA, as.numeric(diff(date_time)/1440))) %>% 
+  drop_na() %>% 
+  mutate(fill_event = seq_along(fill_days))
+ggplot(fill, aes(x = fill_event, y = fill_days)) +
+  geom_line(size = 1, col = "darkblue") +
+  geom_point(size = 3, col = "darkblue") +
+  scale_x_continuous(breaks = c(1:length(fill$fill_event))) +
+  xlab("\nFill event") +
+  ylab("Days between fills\n") +
+  theme_classic()
 
 
 
