@@ -10,7 +10,7 @@ library(skimr)
 library(janitor)
 library(ggrepel)
 
-#the code *REQUIRES* R 4.2 or greater due to UTF-8
+#this code *REQUIRES* R 4.2 or later due to UTF-8
 R.version.string #check version
 
 # ==== Load data ====
@@ -63,7 +63,7 @@ tank1lite.df <- tank1clean.df  |>
          "level",
          "usage",
          "status") |>
-  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
   type_convert() |>
   glimpse()
 
@@ -98,7 +98,7 @@ tank2lite.df <- tank2clean.df  |>
          "level",
          "usage",
          "status") |>
-  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
   type_convert() |>
   glimpse()
 
@@ -134,7 +134,7 @@ tank3lite.df <- tank3clean.df  |>
          "level",
          "usage",
          "status") |>
-  mutate(status = str_remove_all(status, "ZO")) |> #removing level zeroing status
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
   type_convert() |>
   glimpse()
 
@@ -147,12 +147,12 @@ tank3lite.df |>
 
 
 #usage
-ggplot(tank1lite.df, aes(x = date_time, y = Usage)) +
+ggplot(tank1lite.df, aes(x = date_time, y = usage)) +
   theme_bw() +
   labs(title = "Nitrogen usage per day of Tank 1") +
-  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  labs(x = "Date", y =  "Usage (mm/day)" , fill = "") +
   geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
-  geom_text(aes(x = date_time, y = 20, label = Status),
+  geom_text(aes(x = date_time, y = 20, label = status),
             position = position_jitter(width = 0, height = 20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank1-usage.png',
@@ -163,12 +163,12 @@ ggsave(file = './outputs/tank1-usage.png',
 
 
 #usage
-ggplot(tank2lite.df, aes(x = date_time, y = Usage)) +
+ggplot(tank2lite.df, aes(x = date_time, y = usage)) +
   theme_bw() +
   labs(title = "Nitrogen usage per day of Tank 2") +
-  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  labs(x = "Date", y =  "Usage (mm/day)" , fill = "") +
   geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
-  geom_text(aes(x = date_time, y = 20, label = Status),
+  geom_text(aes(x = date_time, y = 20, label = status),
             position = position_jitter(width = 0, height = 20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank2-usage.png',
@@ -182,10 +182,10 @@ ggplot(tank3lite.df, aes(x = date_time)) +
   theme_bw() +
   labs(title = "Temperature of Tank 3") +
   labs(x = "Date", y =  "Temperature" , fill = "") +
-  geom_line(aes(y = Temp_top), color = "darkred", size = 1) +
-  geom_line(aes(y = Temp_bottom), color = "steelblue", size = 1) +
-  geom_text_repel(aes(x = date_time, y = -185, label = Status), vjust = 5) +
-  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+  geom_line(aes(y = temp_top), color = "darkred", size = 1) +
+  geom_line(aes(y = temp_bottom), color = "steelblue", size = 1) +
+  geom_text_repel(aes(x = date_time, y = -185, label = status), vjust = 5) +
+  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank3-temp2.png',
        width = 8,
        height = 6)
@@ -195,22 +195,22 @@ ggplot(tank3lite.df, aes(x = date_time)) +
   theme_bw() +
   labs(title = "Temperature of Tank 3") +
   labs(x = "Date", y =  "Temperature" , fill = "") +
-  geom_line(aes(y = Temp_top), color = "darkred", size = 1) +
-  geom_line(aes(y = Temp_bottom), color = "steelblue", size = 1) +
-  geom_text(aes(x = date_time, y = -187, label = Status),
+  geom_line(aes(y = temp_top), color = "darkred", size = 1) +
+  geom_line(aes(y = temp_bottom), color = "steelblue", size = 1) +
+  geom_text(aes(x = date_time, y = -187, label = status),
             position = position_jitter(width = 0, height = 4)) +
-  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank3-temp.png',
        width = 8,
        height = 6)
 
 #Level
-ggplot(tank3lite.df, aes(x = date_time, y = Level)) +
+ggplot(tank3lite.df, aes(x = date_time, y = level)) +
   theme_bw() +
   labs(title = "Nitrogen levels of Tank 3") +
-  labs(x = "Date", y =  "level (mm)" , fill = "") +
+  labs(x = "Date", y =  "Level (mm)" , fill = "") +
   geom_line(color = "blue", size = 1) +
-  geom_text(aes(x = date_time, y = 230, label = Status),
+  geom_text(aes(x = date_time, y = 230, label = status),
             position = position_jitter(width = 0, height = 20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank3-level.png',
@@ -218,12 +218,12 @@ ggsave(file = './outputs/tank3-level.png',
        height = 6)
 
 #usage
-ggplot(tank3lite.df, aes(x = date_time, y = Usage)) +
+ggplot(tank3lite.df, aes(x = date_time, y = usage)) +
   theme_bw() +
   labs(title = "Nitrogen usage per day of Tank 3") +
-  labs(x = "Date", y =  "usage (mm/day)" , fill = "") +
+  labs(x = "Date", y =  "Usage (mm/day)" , fill = "") +
   geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
-  geom_text(aes(x = date_time, y = 20, label = Status),
+  geom_text(aes(x = date_time, y = 20, label = status),
             position = position_jitter(width = 0, height = 20)) +
   scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
 ggsave(file = './outputs/tank3-usage.png',
@@ -243,26 +243,42 @@ skim(combined.df)
 
 ## Nitrogen usage ---------------------------------------------------------
 
-ggplot(combined.df, aes(x = date_time, y = Usage, colour = tank)) +
+ggplot(combined.df, aes(x = date_time, y = usage, colour = tank)) +
   theme_bw() +
   labs(title = "Nitrogen usage per day") +
-  labs(x = "Date", y =  "usage (mm/day)") +
+  labs(x = "Date", y =  "Usage (mm/day)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b",
+  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b",
                    limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-usage.png',
        width = 8,
        height = 6)
 
+## Nitrogen usage rollong average---------------------------------------------------------
+
+library(tidyquant)
+
+ggplot(combined.df, aes(x = date_time, y = usage, colour = tank)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage per day") +
+  labs(x = "Date", y =  "Usage (mm/day)") +
+  geom_ma(n = 140, size = 1, linetype= "solid") +
+  scale_x_datetime(date_breaks = "14 days", date_labels = "%d %b",
+                   limits = c(as_datetime("2022-04-03"), NA)) +
+  facet_grid(rows = vars(tank))
+ggsave(file = './outputs/tank-combined-usage-rolling.png',
+       width = 8,
+       height = 6)
+
 ## Top temperature ---------------------------------------------------------
 
-ggplot(combined.df, aes(x = date_time, y = Temp_top, colour = tank)) +
+ggplot(combined.df, aes(x = date_time, y = temp_top, colour = tank)) +
   theme_bw() +
   labs(title = "Top tank temperature") +
   labs(x = "Date", y =  "degrees (°C)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b",
+  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b",
                    limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-temp-top.png',
@@ -272,17 +288,33 @@ ggsave(file = './outputs/tank-combined-temp-top.png',
 
 ## Levels ---------------------------------------------------------
 
-ggplot(combined.df, aes(x = date_time, y = Level, colour = tank)) +
+ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
   theme_bw() +
   labs(title = "Nitrogen levels") +
   labs(x = "Date", y =  "level (mm)") +
   geom_line(size = 1) +
   geom_hline(yintercept = 210) +
   scale_x_datetime(
-    date_breaks = "4 days",
+    date_breaks = "7 days",
     date_labels = "%d %b") +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-levels.png',
+       width = 8,
+       height = 6)
+
+## Levels ---rolling ------------------------------------------------------
+
+ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
+  theme_bw() +
+  labs(title = "Nitrogen levels") +
+  labs(x = "Date", y =  "level (mm)") +
+  geom_ma(n = 70, size = 1, linetype= "solid") +
+  geom_hline(yintercept = 210) +
+  scale_x_datetime(
+    date_breaks = "7 days",
+    date_labels = "%d %b") +
+  facet_grid(rows = vars(tank))
+ggsave(file = './outputs/tank-combined-levels-rolling.png',
        width = 8,
        height = 6)
 
@@ -306,7 +338,8 @@ write_csv(file = './outputs/tank2fills.csv')
 
 # From Aaron H --------------------------------------------------------
 
-fill = tank2lite.df %>%
+#days between fills
+fill = tank3lite.df %>%
   filter(status == "F") %>% 
   arrange(date_time) %>% 
   mutate(fill_days = c(NA, as.numeric(diff(date_time)/1440))) %>% 
@@ -319,6 +352,30 @@ ggplot(fill, aes(x = fill_event, y = fill_days)) +
   xlab("\nFill event") +
   ylab("Days between fills\n") +
   theme_classic()
+ggsave(file = './outputs/days-between-fills.png',
+       width = 8,
+       height = 6)
+
+usage = tank3lite.df %>% 
+  #filter(status != "F" | is.na(status)) %>% 
+  filter(hour(date_time) == 0) %>% 
+  distinct() %>%
+  arrange(date_time) %>% 
+  mutate(usage_daily = c(NA, diff(level))) %>% 
+  filter(usage_daily < 0) %>% 
+  mutate(days = seq_along(usage_daily)) 
+ggplot(usage, aes(x = days, y = -1*usage_daily)) +
+  geom_line(size = 1, col = "darkblue") +
+  geom_point(size = 3, col = "darkblue") +
+  scale_x_continuous(breaks = c(1:length(days))) +
+  ylim(c(0, max(usage$days))) +
+  xlab("\nDays (excluding fill days)") +
+  ylab("Daily usage (mm/day)\n") +
+  theme_classic()
+ggsave(file = './outputs/daily-usage.png',
+                        width = 8,
+                        height = 6)
+
 
 
 
