@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bevan Weir">
+<meta name="dcterms.date" content="2022-09-23">
+
+<title>MWLR Chart MVE nitrogen stats</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="N2-tanks_files/libs/clipboard/clipboard.min.js"></script>
+<script src="N2-tanks_files/libs/quarto-html/quarto.js"></script>
+<script src="N2-tanks_files/libs/quarto-html/popper.min.js"></script>
+<script src="N2-tanks_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="N2-tanks_files/libs/quarto-html/anchor.min.js"></script>
+<link href="N2-tanks_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="N2-tanks_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="N2-tanks_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="N2-tanks_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="N2-tanks_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<script src="N2-tanks_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="N2-tanks_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#temperatures" id="toc-temperatures" class="nav-link" data-scroll-target="#temperatures">Temperatures</a>
+  <ul class="collapse">
+  <li><a href="#top-tank-temperatures" id="toc-top-tank-temperatures" class="nav-link" data-scroll-target="#top-tank-temperatures">Top tank temperatures</a></li>
+  </ul></li>
+  <li><a href="#nitrogen-usage" id="toc-nitrogen-usage" class="nav-link" data-scroll-target="#nitrogen-usage">Nitrogen usage</a></li>
+  <li><a href="#status-messages" id="toc-status-messages" class="nav-link" data-scroll-target="#status-messages">Status messages</a></li>
+  <li><a href="#chart-mve-ts-event-log-codes" id="toc-chart-mve-ts-event-log-codes" class="nav-link" data-scroll-target="#chart-mve-ts-event-log-codes">Chart MVE TS Event Log Codes</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MWLR Chart MVE nitrogen stats</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Bevan Weir </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 23, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The ICMP culture collection of New Zealand has over 23,000 cryopreserved cultures. In March 2022 the existing 15 liquid nitrogen dewars were replaced with three Chart MVE XXXXXX. This system has the ability to record statistics on temperature and liquid nitrogen use. This document is an analysis of some of these statistics.</p>
+</section>
+<section id="temperatures" class="level2">
+<h2 class="anchored" data-anchor-id="temperatures">Temperatures</h2>
+<p>Temperature is measured at the bottom and top of each tank. The bottom temperature probe is constantly submerged in liquid nitrogen.</p>
+<p>Liquid nitrogen is -195.8°C at STP, the temperature at the bottom of the tanks is stable and near this temperature. The following tables aggregate statistics on 1476 data points for each tank.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>temperature at the bottom of the tanks</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> tank </th>
+   <th style="text-align:right;"> mean </th>
+   <th style="text-align:right;"> median </th>
+   <th style="text-align:right;"> max </th>
+   <th style="text-align:right;"> sd </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:right;"> -194.6 </td>
+   <td style="text-align:right;"> -194.8 </td>
+   <td style="text-align:right;"> -192.0 </td>
+   <td style="text-align:right;"> 0.6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:right;"> -195.0 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> -189.7 </td>
+   <td style="text-align:right;"> 0.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:right;"> -195.3 </td>
+   <td style="text-align:right;"> -195.3 </td>
+   <td style="text-align:right;"> -191.7 </td>
+   <td style="text-align:right;"> 0.3 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<section id="top-tank-temperatures" class="level3">
+<h3 class="anchored" data-anchor-id="top-tank-temperatures">Top tank temperatures</h3>
+<p>The top tank temperature is warmer, and more variable due to heating when retrieving samples.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>temperature at the top of the tanks</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> tank </th>
+   <th style="text-align:right;"> mean </th>
+   <th style="text-align:right;"> median </th>
+   <th style="text-align:right;"> max </th>
+   <th style="text-align:right;"> sd </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:right;"> -177.9 </td>
+   <td style="text-align:right;"> -178.0 </td>
+   <td style="text-align:right;"> -163.3 </td>
+   <td style="text-align:right;"> 0.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:right;"> -176.6 </td>
+   <td style="text-align:right;"> -176.6 </td>
+   <td style="text-align:right;"> -151.9 </td>
+   <td style="text-align:right;"> 1.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:right;"> -176.8 </td>
+   <td style="text-align:right;"> -177.1 </td>
+   <td style="text-align:right;"> -159.3 </td>
+   <td style="text-align:right;"> 1.8 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Big spikes in temperature can be seen in May to June when the tanks were first loaded with samples. Tank 3 is our most often accessed tank, so has temperature spikes as samples are accessed. Some temperature spiking is normal, but it should not exceed the glass transition temperature of about -130°C.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="N2-tanks_files/figure-html/combined%20top%20tank%20temperature-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="nitrogen-usage" class="level2">
+<h2 class="anchored" data-anchor-id="nitrogen-usage">Nitrogen usage</h2>
+<p>dfdfdf</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="N2-tanks_files/figure-html/nitrogen%20levels%20last%20month-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>dfdfdf</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="N2-tanks_files/figure-html/nitrogen%20usage%20per%20day-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="status-messages" class="level2">
+<h2 class="anchored" data-anchor-id="status-messages">Status messages</h2>
+<p>The tables below list the last 10 status messages for each tank, removing the very common filling, hot gas bypass, and level zeroing codes. A list of the meaning of all event log codes is at the bottom of the page.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>status codes tank 1</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> tank </th>
+   <th style="text-align:left;"> date_time </th>
+   <th style="text-align:right;"> temp_top </th>
+   <th style="text-align:right;"> temp_bottom </th>
+   <th style="text-align:right;"> level </th>
+   <th style="text-align:right;"> usage </th>
+   <th style="text-align:left;"> status </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-09-23 06:51:00 </td>
+   <td style="text-align:right;"> -178.1 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> 235 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-09-23 05:00:00 </td>
+   <td style="text-align:right;"> -178.1 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> UW </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-09-23 04:34:00 </td>
+   <td style="text-align:right;"> -178.1 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> UW </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-08-10 06:40:00 </td>
+   <td style="text-align:right;"> -179.2 </td>
+   <td style="text-align:right;"> -194.9 </td>
+   <td style="text-align:right;"> 225 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-08-10 05:16:00 </td>
+   <td style="text-align:right;"> -179.3 </td>
+   <td style="text-align:right;"> -194.8 </td>
+   <td style="text-align:right;"> 230 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FT </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-07-15 10:31:00 </td>
+   <td style="text-align:right;"> -178.9 </td>
+   <td style="text-align:right;"> -195.2 </td>
+   <td style="text-align:right;"> 250 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-07-12 09:30:00 </td>
+   <td style="text-align:right;"> -177.8 </td>
+   <td style="text-align:right;"> -194.6 </td>
+   <td style="text-align:right;"> 220 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-07-07 13:05:00 </td>
+   <td style="text-align:right;"> -178.5 </td>
+   <td style="text-align:right;"> -194.8 </td>
+   <td style="text-align:right;"> 250 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-07-07 13:00:00 </td>
+   <td style="text-align:right;"> -178.0 </td>
+   <td style="text-align:right;"> -194.6 </td>
+   <td style="text-align:right;"> 235 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> F  AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 1 </td>
+   <td style="text-align:left;"> 2022-07-07 12:44:00 </td>
+   <td style="text-align:right;"> -177.4 </td>
+   <td style="text-align:right;"> -193.8 </td>
+   <td style="text-align:right;"> 210 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> F  AM </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>status codes tank 2</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> tank </th>
+   <th style="text-align:left;"> date_time </th>
+   <th style="text-align:right;"> temp_top </th>
+   <th style="text-align:right;"> temp_bottom </th>
+   <th style="text-align:right;"> level </th>
+   <th style="text-align:right;"> usage </th>
+   <th style="text-align:left;"> status </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-14 07:14:00 </td>
+   <td style="text-align:right;"> -176.7 </td>
+   <td style="text-align:right;"> -195.2 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:35:00 </td>
+   <td style="text-align:right;"> -177.7 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> 250 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:14:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -194.4 </td>
+   <td style="text-align:right;"> 205 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> F  AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:12:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -194.3 </td>
+   <td style="text-align:right;"> 205 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> BY AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:09:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -194.4 </td>
+   <td style="text-align:right;"> 200 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:09:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -194.4 </td>
+   <td style="text-align:right;"> 200 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> BY AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-13 07:09:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -194.4 </td>
+   <td style="text-align:right;"> 200 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-12 16:39:00 </td>
+   <td style="text-align:right;"> -177.4 </td>
+   <td style="text-align:right;"> -194.8 </td>
+   <td style="text-align:right;"> 205 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FT </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-09-06 10:03:00 </td>
+   <td style="text-align:right;"> -177.3 </td>
+   <td style="text-align:right;"> -195.0 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 2 </td>
+   <td style="text-align:left;"> 2022-08-19 15:11:00 </td>
+   <td style="text-align:right;"> -176.3 </td>
+   <td style="text-align:right;"> -195.1 </td>
+   <td style="text-align:right;"> 235 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>status codes tank 3</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> tank </th>
+   <th style="text-align:left;"> date_time </th>
+   <th style="text-align:right;"> temp_top </th>
+   <th style="text-align:right;"> temp_bottom </th>
+   <th style="text-align:right;"> level </th>
+   <th style="text-align:right;"> usage </th>
+   <th style="text-align:left;"> status </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-09-20 15:18:00 </td>
+   <td style="text-align:right;"> -177.2 </td>
+   <td style="text-align:right;"> -195.6 </td>
+   <td style="text-align:right;"> 250 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> F  AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-09-20 14:05:00 </td>
+   <td style="text-align:right;"> -176.9 </td>
+   <td style="text-align:right;"> -195.5 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> AM </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-09-20 14:04:00 </td>
+   <td style="text-align:right;"> -176.9 </td>
+   <td style="text-align:right;"> -195.5 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> AM CL </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-09-20 14:04:00 </td>
+   <td style="text-align:right;"> -176.9 </td>
+   <td style="text-align:right;"> -195.5 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> CL </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-09-16 07:47:00 </td>
+   <td style="text-align:right;"> -179.9 </td>
+   <td style="text-align:right;"> -195.7 </td>
+   <td style="text-align:right;"> 245 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-08-31 11:13:00 </td>
+   <td style="text-align:right;"> -176.9 </td>
+   <td style="text-align:right;"> -195.0 </td>
+   <td style="text-align:right;"> 200 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-08-29 11:58:00 </td>
+   <td style="text-align:right;"> -168.4 </td>
+   <td style="text-align:right;"> -193.4 </td>
+   <td style="text-align:right;"> 205 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-08-29 11:35:00 </td>
+   <td style="text-align:right;"> -172.5 </td>
+   <td style="text-align:right;"> -194.4 </td>
+   <td style="text-align:right;"> 200 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-08-24 11:01:00 </td>
+   <td style="text-align:right;"> -176.8 </td>
+   <td style="text-align:right;"> -195.4 </td>
+   <td style="text-align:right;"> 235 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tank 3 </td>
+   <td style="text-align:left;"> 2022-08-19 15:00:00 </td>
+   <td style="text-align:right;"> -176.7 </td>
+   <td style="text-align:right;"> -195.4 </td>
+   <td style="text-align:right;"> 240 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> FD </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</section>
+<section id="chart-mve-ts-event-log-codes" class="level2">
+<h2 class="anchored" data-anchor-id="chart-mve-ts-event-log-codes">Chart MVE TS Event Log Codes</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Event Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AM</td>
+<td>Alarm Mute</td>
+</tr>
+<tr class="even">
+<td>AH</td>
+<td>Temp A High Alarm</td>
+</tr>
+<tr class="odd">
+<td>AL</td>
+<td>Temp A Low Alarm</td>
+</tr>
+<tr class="even">
+<td>BB</td>
+<td>Running on battery power</td>
+</tr>
+<tr class="odd">
+<td>BH</td>
+<td>Temp B High Alarm</td>
+</tr>
+<tr class="even">
+<td>BL</td>
+<td>Temp B Low Alarm</td>
+</tr>
+<tr class="odd">
+<td>BP</td>
+<td>Bypass Sensor Open</td>
+</tr>
+<tr class="even">
+<td>BV</td>
+<td>Low Battery Voltage Alarm</td>
+</tr>
+<tr class="odd">
+<td>BY</td>
+<td>Hot Gas Bypassing</td>
+</tr>
+<tr class="even">
+<td>CA</td>
+<td>Temp A Calibration Alarm</td>
+</tr>
+<tr class="odd">
+<td>CB</td>
+<td>Temp B Calibration Alarm</td>
+</tr>
+<tr class="even">
+<td>CG</td>
+<td>Bypass Sensor Calibration Alarm</td>
+</tr>
+<tr class="odd">
+<td>CL</td>
+<td>OFAF Network Communication Loss</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>Filling</td>
+</tr>
+<tr class="odd">
+<td>FD</td>
+<td>Fill Disabled</td>
+</tr>
+<tr class="even">
+<td>FT</td>
+<td>Fill Time Alarm</td>
+</tr>
+<tr class="odd">
+<td>HG</td>
+<td>Hot Gas Bypass Time Alarm</td>
+</tr>
+<tr class="even">
+<td>LH</td>
+<td>High Level Alarm</td>
+</tr>
+<tr class="odd">
+<td>LL</td>
+<td>Low Level Alarm</td>
+</tr>
+<tr class="even">
+<td>LO</td>
+<td>Lid Open Alarm</td>
+</tr>
+<tr class="odd">
+<td>PF</td>
+<td>Power Failure</td>
+</tr>
+<tr class="even">
+<td>UW</td>
+<td>Liquid Usage Warning Alarm</td>
+</tr>
+<tr class="odd">
+<td>ZO</td>
+<td>Level Zeroing</td>
+</tr>
+</tbody>
+</table>
+<p>This document was compiled on Sat Sep 24 15:10:51 2022 using R version 4.2.0 and Tidyverse version 1.3.2. All figures and code are licensed as <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> attributed to Bevan Weir. Source code is available at <a href="https://github.com/onco-p53/chart-MVE" class="uri">https://github.com/onco-p53/chart-MVE</a>.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
