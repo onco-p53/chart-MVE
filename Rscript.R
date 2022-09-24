@@ -149,12 +149,14 @@ tank3lite.df |>
 #usage
 ggplot(tank1lite.df, aes(x = date_time, y = usage)) +
   theme_bw() +
-  labs(title = "Nitrogen usage per day of Tank 1") +
+  labs(title = "Nitrogen usage and codes for the last month for Tank 1") +
   labs(x = "Date", y =  "Usage (mm/day)" , fill = "") +
   geom_step(color = "darkgreen", fill = "darkgreen", size = 1) +
   geom_text(aes(x = date_time, y = 20, label = status),
             position = position_jitter(width = 0, height = 20)) +
-  scale_x_datetime(date_breaks = "2 days", date_labels = "%d %b")
+  scale_x_datetime(limits = as_datetime(c("2022-09-01","2022-09-24")),
+                   date_breaks = "2 days",
+                   date_labels = "%d %b")
 ggsave(file = './outputs/tank1-usage.png',
        width = 8,
        height = 6)
@@ -255,7 +257,7 @@ ggsave(file = './outputs/tank-combined-usage.png',
        width = 8,
        height = 6)
 
-## Nitrogen usage rollong average---------------------------------------------------------
+## Nitrogen usage rolling average---------------------------------------------------------
 
 library(tidyquant)
 
@@ -278,7 +280,7 @@ ggplot(combined.df, aes(x = date_time, y = temp_top, colour = tank)) +
   labs(title = "Top tank temperature") +
   labs(x = "Date", y =  "degrees (°C)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b",
+  scale_x_datetime(date_breaks = "1 month", date_labels = "%d %b",
                    limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-temp-top.png',
@@ -290,12 +292,12 @@ ggsave(file = './outputs/tank-combined-temp-top.png',
 
 ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
   theme_bw() +
-  labs(title = "Nitrogen levels") +
+  labs(title = "Nitrogen levels - past month") +
   labs(x = "Date", y =  "level (mm)") +
   geom_line(size = 1) +
   geom_hline(yintercept = 210) +
-  scale_x_datetime(
-    date_breaks = "7 days",
+  scale_x_datetime(limits = as_datetime(c("2022-09-01", NA)),
+    date_breaks = "2 days",
     date_labels = "%d %b") +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-levels.png',
@@ -311,7 +313,7 @@ ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
   geom_ma(n = 70, size = 1, linetype= "solid") +
   geom_hline(yintercept = 210) +
   scale_x_datetime(
-    date_breaks = "7 days",
+    date_breaks = "1 month",
     date_labels = "%d %b") +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-levels-rolling.png',
