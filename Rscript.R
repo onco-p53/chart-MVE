@@ -328,11 +328,13 @@ ggsave(file = './outputs/tank-combined-levels-rolling.png',
 
 # extract all fills
 
+tank2lite.df
+
 tank2fills.df <- tank2lite.df |> 
-  filter(Status == "F") |> 
+  filter(status == "F") |> 
   select("tank",
          "date_time",
-         "Status")
+         "status")
 
 tank2fills.df |>
 write_csv(file = './outputs/tank2fills.csv')
