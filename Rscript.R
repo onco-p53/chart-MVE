@@ -113,7 +113,7 @@ tank2lite.df |>
 tank3clean.df <- tank3.df  |>
   slice(1:(n() - 110)) |> # cuts off early values from factory and cooling
   filter(!is.na(Level)) |> # removes change parameter lines
-  filter(User == "11") |> # restrict to the main user
+  #filter(User == "11") |> # restrict to the main user - user changed sep 2022
   mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
   mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
   mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
@@ -358,6 +358,10 @@ ggsave(file = './outputs/days-between-fills.png',
        width = 8,
        height = 6)
 
+
+
+
+
 usage = tank3lite.df %>% 
   #filter(status != "F" | is.na(status)) %>% 
   filter(hour(date_time) == 0) %>% 
@@ -380,4 +384,5 @@ ggsave(file = './outputs/daily-usage.png',
 
 
 
+# testing --------------------------------------------------------
 
