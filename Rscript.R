@@ -359,9 +359,6 @@ ggsave(file = './outputs/days-between-fills.png',
        height = 6)
 
 
-
-
-
 usage = tank3lite.df %>% 
   #filter(status != "F" | is.na(status)) %>% 
   filter(hour(date_time) == 0) %>% 
