@@ -1,0 +1,389 @@
+---
+title: "ICMP culture collection nitrogen stats"
+subtitle: "Statistical analysis of Chart MVE nitrogen storage tanks"
+author: "Bevan Weir"
+date: 11 Oct 2022
+format: 
+    html: 
+      toc: true
+   # code-fold: true
+editor: visual
+---
+
+```{r load and clean the data}
+#| echo: false
+#| message: false
+#| warning: false
+
+# ==== Load all the packages needed ====
+
+library(tidyverse)
+library(lubridate)
+library(RColorBrewer)
+library(skimr)
+library(janitor)
+library(ggrepel)
+library(knitr)
+library(kableExtra)
+
+#this code *REQUIRES* R 4.2 or later due to UTF-8
+#R.version.string #check version
+
+# ==== Load data ====
+
+#load tank 1 data
+tank1.df <- read_csv("39567300.CSV",
+                     guess_max = Inf,
+                     show_col_types = FALSE)
+
+#load tank 2 data
+tank2.df <- read_csv("39560200.CSV",
+                     guess_max = Inf,
+                     show_col_types = FALSE)
+
+
+
+#load tank 3 data
+tank3.df <- read_csv("39561500.CSV",
+                     guess_max = Inf,
+                     show_col_types = FALSE)
+
+
+# ==== Clean the raw Data ====
+
+
+## Tank 1 ----------------------------------------------------------
+
+tank1clean.df <- tank1.df  |>
+  slice(1:(n() - 109)) |> # cuts off early values from factory and cooling
+  filter(!is.na(Level)) |> # removes change parameter lines
+  filter(User == "0") |> # restrict to the main user
+  mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
+  mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
+  mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
+  mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
+  mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns
+  mutate(tank = "Tank 1") |>
+  clean_names()
+
+
+#this code selects only the columns we care about and reconverts to the right format
+tank1lite.df <- tank1clean.df  |>
+  select("tank",
+         "date_time",
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
+  type_convert()
+
+
+## Tank 2 ----------------------------------------------------------
+
+tank2clean.df <- tank2.df  |>
+  slice(1:(n() - 119)) |> # cuts off early values from factory and cooling
+  filter(!is.na(Level)) |> # removes change parameter lines
+  filter(User == "0") |> # restrict to the main user
+  mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
+  mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
+  mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
+  mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
+  mutate(date_time = dmy_hms(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
+  mutate(tank = "Tank 2") |>
+  clean_names()
+
+
+#this code selects only the columns we care about and reconverts to the right format
+tank2lite.df <- tank2clean.df  |>
+  select("tank",
+         "date_time",
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
+  type_convert()
+
+
+## Tank 3 ----------------------------------------------------------
+
+
+tank3clean.df <- tank3.df  |>
+  slice(1:(n() - 110)) |> # cuts off early values from factory and cooling
+  filter(!is.na(Level)) |> # removes change parameter lines
+  #filter(User == "11") |> # restrict to the main user
+  mutate(Temp_top = str_remove_all(`Temp A`, "�C")) |>  # removes temperature symbol
+  mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
+  mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
+  mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
+  mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns
+  mutate(tank = "Tank 3") |>
+  clean_names()
+
+
+#this code selects only the columns we care about and reconverts to the right format
+tank3lite.df <- tank3clean.df  |>
+  select("tank",
+         "date_time",
+         "temp_top",
+         "temp_bottom",
+         "level",
+         "usage",
+         "status") |>
+  filter(status != "ZO"| is.na(status)) |> #removing rows with level zeroing (ZO) status
+  type_convert()
+
+#combine the dataframes
+combined.df <- bind_rows(tank1lite.df, tank2lite.df) |>
+  bind_rows(tank3lite.df)
+
+```
+
+## Introduction
+
+The ICMP culture collection of New Zealand has over 23,000 cryopreserved cultures. In late March 2022 the existing 13 liquid nitrogen dewars were replaced with three Chart MVE HEco 1500-190 (1542R-190AF-BB-TS) storage tanks. This system has the ability to record statistics on temperature and liquid nitrogen use. Presented here is an analysis of some of these statistics.
+
+Tank 1 is the 'stock', Tank 3 is 'user', and Tank 2 is currently mostly empty. The 1542R-190 has an inner diameter of 978 mm and a usable internal height of 782 mm, thus can contain 768 litres of liquid nitrogen. However all our samples (in ranks) are stored in the gas phase of nitrogen, thus the liquid nitrogen portion of the tanks is 115 L under the tray on top of which the racks sit.
+
+## Temperatures
+
+Temperature is measured at the bottom and top of each tank. The bottom temperature probe is constantly submerged in liquid nitrogen.
+
+Liquid nitrogen is -195.8°C at STP, the temperature at the bottom of the tanks is stable and near this temperature. The following tables aggregate statistics on `r round((count(combined.df)/3))` data points for each tank since April 2022.
+
+```{r average bottom temp}
+#| echo: false
+#| message: false
+#| warning: false
+
+# label: tbl-temp.bottom
+# tbl-cap: temperature at the bottom of the tanks
+
+bottom.temp <- combined.df %>% # this one gets a total count
+  group_by(tank) %>%
+  dplyr::summarize(
+    mean = mean(temp_bottom),
+    median = median(temp_bottom),
+    max = max(temp_bottom),
+    sd = sd(temp_bottom),
+    .groups = "drop"
+  )
+
+kable(bottom.temp, digits=1, "html",
+      caption = "temperature at the bottom of the tanks") |> 
+      kable_styling("striped", "bordered")
+
+```
+
+### Top tank temperatures
+
+The temperature at the top of the tank is warmer, and more variable due to warming when retrieving samples.
+
+```{r average top temp}
+#| echo: false
+#| message: false
+#| warning: false
+
+# label: tbl-temp.top
+# tbl-cap: temperature at the top of the tanks
+
+top.temp <- combined.df %>% # this one gets a total count
+  group_by(tank) %>%
+  dplyr::summarize(
+    mean = mean(temp_top),
+    median = median(temp_top),
+    max = max(temp_top),
+    sd = sd(temp_top),
+    .groups = "drop"
+  )
+
+kable(top.temp, digits=1, "html",
+      caption = "temperature at the top of the tanks") |> 
+      kable_styling("striped", "bordered")
+
+```
+
+Big spikes in temperature can be seen in May to June when the tanks were first loaded with samples. Tank 3 is our most often accessed tank, so has temperature spikes as samples are accessed. Some temperature spiking is normal, but it should not exceed the glass transition temperature of about -130°C.
+
+```{r combined top tank temperature all time}
+#| echo: false
+#| message: false
+#| warning: true
+
+# label: fig-temp.all
+# fig-cap: temperature at the top of the tanks from install to now
+
+ggplot(combined.df, aes(x = date_time, y = temp_top, colour = tank)) +
+  theme_bw() +
+  labs(title = "Top tank temperature from install to now") +
+  labs(x = "Date", y =  "degrees (°C)") +
+  geom_line(size = 1, show.legend = FALSE) +
+  scale_x_datetime(date_breaks = "1 month", date_labels = "%d %b",
+                   limits = c(as_datetime("2022-04-03"), NA)) +
+  facet_grid(rows = vars(tank))
+```
+
+```{r combined top tank temperature last month}
+#| echo: false
+#| message: false
+#| warning: false
+
+# label: fig-temp.month
+# fig-cap: temperature at the top of the tanks over the last month
+
+#calculate dates
+today <- Sys.Date()
+a_month_ago <- today %m+% months(-1) # this will subtract a month from today
+
+ggplot(combined.df, aes(x = date_time, y = temp_top, colour = tank)) +
+  theme_bw() +
+  labs(title = "Top tank temperature last month") +
+  labs(x = "Date", y =  "degrees (°C)") +
+  geom_line(size = 1, show.legend = FALSE) +
+  scale_x_datetime(date_breaks = "4 days", date_labels = "%d %b",
+                   limits = c(as_datetime(a_month_ago), NA)) +
+  ylim(-180, -160) +
+  facet_grid(rows = vars(tank))
+
+```
+
+## Nitrogen levels
+
+The level of liquid nitrogen in the tanks changes as it evaporates away and is refilled. The minimum level triggering a fill is 205 mm, tanks get filled to 250 mm. On 20th September 2022 (red dotted line) the manifold was commissioned allowing "one-fill all-fill" (OFAF) to work. OFAF fills all tanks sequentially once any one triggers the process.
+
+```{r nitrogen levels last month}
+#| echo: false
+#| message: false
+#| warning: false
+
+#calculate dates
+today <- Sys.Date()
+a_month_ago <- today %m+% months(-1) # subtract a month from today
+
+ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
+  theme_bw() +
+  labs(title = "Nitrogen levels over the past month") +
+  labs(x = "Date", y =  "level (mm)") +
+  geom_line(size = 1, show.legend = FALSE) +
+  geom_hline(yintercept = 205) +
+  geom_vline(xintercept=as_datetime("2022-09-20"), linetype=4, color="red") +
+  scale_x_datetime(limits = c(as_datetime(c(a_month_ago, NA))),
+    date_breaks = "4 days",
+    date_labels = "%d %b") +
+  facet_grid(rows = vars(tank))
+
+```
+
+## Nitrogen usage
+
+Nitrogen usage as reported by the system in mm per day. 10 mm depth in the tank is about 7.5 litres, 15 mm is 11.2 litres.
+
+```{r nitrogen usage per day}
+#| echo: false
+#| message: false
+#| warning: false
+
+ggplot(combined.df, aes(x = date_time, y = usage, colour = tank)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage per day over the last month") +
+  labs(x = "Date", y =  "Usage (mm/day)") +
+  geom_line(size = 1, show.legend = FALSE) +
+  scale_x_datetime(date_breaks = "3 days", date_labels = "%d %b",
+                   limits = c(as_datetime(a_month_ago), NA)) +
+  facet_grid(rows = vars(tank))
+
+```
+
+
+```{r nitrogen usage boxplot}
+#| echo: false
+#| message: false
+#| warning: false
+
+ggplot(combined.df, aes(x = tank, y = usage, colour = tank)) +
+  theme_bw() +
+  labs(title = "Nitrogen usage since install") +
+  labs(x = "Tank", y =  "Usage (mm/day)") +
+  geom_boxplot(show.legend = FALSE)
+
+```
+## Status messages
+
+The tables below list the last 10 status messages for each tank, removing the very common filling, hot gas bypass, and level zeroing codes. A list of the meaning of all event log codes is at the bottom of the page. The most recent event is first.
+
+```{r tank status}
+#| echo: false
+#| message: false
+#| warning: true
+
+#tank 1
+status.1 <- tank1lite.df |> 
+  filter(status != "" &
+           status != "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=10)
+
+kable(status.1, digits=1, "html",
+      caption = "status codes tank 1") |> 
+      kable_styling("striped", "bordered")
+
+#tank 2
+status.2 <- tank2lite.df |> 
+  filter(status != "" &
+           status != "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=10)
+
+kable(status.2, digits=1, "html",
+      caption = "status codes tank 2") |> 
+      kable_styling("striped", "bordered")
+
+#tank 3
+status.3 <- tank3lite.df |> 
+  filter(status != "" &
+           status != "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=10)
+
+kable(status.3, digits=1, "html",
+      caption = "status codes tank 3") |> 
+      kable_styling("striped", "bordered")
+
+
+```
+
+## Chart MVE TS Event Log Codes
+
+| Event Code | Description                     |
+|------------|---------------------------------|
+| AM         | Alarm Mute                      |
+| AH         | Temp A High Alarm               |
+| AL         | Temp A Low Alarm                |
+| BB         | Running on battery power        |
+| BH         | Temp B High Alarm               |
+| BL         | Temp B Low Alarm                |
+| BP         | Bypass Sensor Open              |
+| BV         | Low Battery Voltage Alarm       |
+| BY         | Hot Gas Bypassing               |
+| CA         | Temp A Calibration Alarm        |
+| CB         | Temp B Calibration Alarm        |
+| CG         | Bypass Sensor Calibration Alarm |
+| CL         | OFAF Network Communication Loss |
+| F          | Filling                         |
+| FD         | Fill Disabled                   |
+| FT         | Fill Time Alarm                 |
+| HG         | Hot Gas Bypass Time Alarm       |
+| LH         | High Level Alarm                |
+| LL         | Low Level Alarm                 |
+| LO         | Lid Open Alarm                  |
+| PF         | Power Failure                   |
+| UW         | Liquid Usage Warning Alarm      |
+| ZO         | Level Zeroing                   |
+
+This document was compiled on `r date()` using R version `r getRversion()` and Tidyverse version `r packageVersion("tidyverse")`. All figures and code are licensed as [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) attributed to Bevan Weir. Source code is available at <https://github.com/onco-p53/chart-MVE>.
