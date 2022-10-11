@@ -250,7 +250,7 @@ ggplot(combined.df, aes(x = date_time, y = usage, colour = tank)) +
   labs(title = "Nitrogen usage per day") +
   labs(x = "Date", y =  "Usage (mm/day)") +
   geom_line(size = 1) +
-  scale_x_datetime(date_breaks = "7 days", date_labels = "%d %b",
+  scale_x_datetime(date_breaks = "1 month", date_labels = "%d %b",
                    limits = c(as_datetime("2022-04-03"), NA)) +
   facet_grid(rows = vars(tank))
 ggsave(file = './outputs/tank-combined-usage.png',
@@ -384,4 +384,40 @@ ggsave(file = './outputs/daily-usage.png',
 
 
 # testing --------------------------------------------------------
+
+
+# Nitrogen volume --------------------------------------------------------
+
+library(readxl)
+LN_deliveries.df <- read_excel("LN_deliveries.xlsx") |> 
+  mutate(date.delivered = ymd(Date, truncated = 3) ) %>%
+  rename(amount = "Amount (liters)") |>
+  clean_names() |>
+  glimpse()
+
+qplot(LN_deliveries.df, aes(x = date_delivered, y = amount))
+
+ggplot2::ggplot(data = LN_deliveries.df, mapping = ggplot2::aes(x = date_delivered, y = amount)) + 
+  ggplot2::geom_line()
+
+
+ggplot(LN_deliveries.df, mapping = aes(x = date_delivered, y = amount)) +
+  labs(title = "ICMP liquid nitrogen deliveries") +
+  labs(x = "Date of delivery", y =  "Number of litres per delivery") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_x_date(date_breaks = "2 month", date_labels = "%b-%y") +
+  scale_fill_brewer(palette = "Set2") +
+  geom_point(size = 2) +
+  geom_line(size = 0.5) +
+  geom_smooth(size = 2, method = loess, show.legend = FALSE)
+ggsave(file='./ICMP-nitrogen-delivery.png', width=8, height=5)
+
+
+
+#usage per year
+#seperate box plots?
+#calculate perday usage by devidubg by previous period?
+
+
 
