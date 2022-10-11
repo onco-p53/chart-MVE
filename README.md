@@ -1,6 +1,7 @@
 # chart-MVE
-R code to analyse event log temperature and nitrogen usage from Chart MVE TS controller liquid nitrogen tanks.
-Default logging is every 4 hours.
+R code to analyse event log temperature and nitrogen usage from Chart MVE TS controller liquid nitrogen tanks. Default logging is every 4 hours.
+
+The render output can be seen here: https://www.rhizobia.co.nz/r/N2-tanks.html
 
 ## Chart MVE TS Event Log Codes
 
