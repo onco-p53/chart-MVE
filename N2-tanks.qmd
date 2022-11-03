@@ -2,7 +2,7 @@
 title: "ICMP culture collection nitrogen stats"
 subtitle: "Statistical analysis of Chart MVE nitrogen storage tanks"
 author: "Bevan Weir"
-date: 21 Oct 2022
+date: 3 Nov 2022
 format: 
     html: 
       toc: true
@@ -269,7 +269,7 @@ ggplot(combined.df, aes(x = date_time, y = level, colour = tank)) +
   labs(x = "Date", y =  "level (mm)") +
   geom_line(size = 1, show.legend = FALSE) +
   geom_hline(yintercept = 205) +
-  geom_vline(xintercept=as_datetime("2022-09-20"), linetype=4, color="red") +
+  #geom_vline(xintercept=as_datetime("2022-09-20"), linetype=4, color="red") +
   scale_x_datetime(limits = c(as_datetime(c(a_month_ago, NA))),
     date_breaks = "4 days",
     date_labels = "%d %b") +
