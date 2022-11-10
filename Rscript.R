@@ -386,6 +386,17 @@ ggsave(file = './outputs/daily-usage.png',
 # testing --------------------------------------------------------
 
 
+arrange(ICMP.df, date.isolated) %>%
+  select("AccessionNumber","SpecimenType", "Country", "date.isolated") %>%
+  slice_head(n=5)
+
+#sorts and cuts off values before 1 july
+afterjuly <- combined.df |> 
+  arrange(desc(date_time)) |> 
+  slice(1:(n() - 2300))
+
+tail(afterjuly)
+
 # Nitrogen volume --------------------------------------------------------
 
 library(readxl)

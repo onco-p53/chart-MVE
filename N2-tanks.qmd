@@ -140,6 +140,12 @@ tank3lite.df <- tank3clean.df  |>
 combined.df <- bind_rows(tank1lite.df, tank2lite.df) |>
   bind_rows(tank3lite.df)
 
+#sorts and cuts off values before 1 July
+#this is when the tanks have settled
+afterjuly.df <- combined.df |> 
+  arrange(desc(date_time)) |> 
+  slice(1:(n() - 2300))
+
 ```
 
 ## Introduction
@@ -252,7 +258,7 @@ ggplot(combined.df, aes(x = date_time, y = temp_top, colour = tank)) +
 
 ## Nitrogen levels
 
-The level of liquid nitrogen in the tanks changes as it evaporates away and is refilled. The minimum level triggering a fill is 205 mm, tanks get filled to 250 mm. On 20th September 2022 (red dotted line) the manifold was commissioned allowing "one-fill all-fill" (OFAF) to work. OFAF fills all tanks sequentially once any one triggers the process.
+The level of liquid nitrogen in the tanks changes as it evaporates away and is refilled. The minimum level triggering a fill is 205 mm, tanks get filled to 250 mm. On 20th September 2022 the manifold was commissioned allowing "one-fill all-fill" (OFAF) to work. OFAF fills all tanks sequentially once any one triggers the process.
 
 ```{r nitrogen levels last month}
 #| echo: false
@@ -303,9 +309,9 @@ ggplot(combined.df, aes(x = date_time, y = usage, colour = tank)) +
 #| message: false
 #| warning: false
 
-ggplot(combined.df, aes(x = tank, y = usage, colour = tank)) +
+ggplot(afterjuly.df, aes(x = tank, y = usage, colour = tank)) +
   theme_bw() +
-  labs(title = "Nitrogen usage since install") +
+  labs(title = "Nitrogen usage since July 2022") +
   labs(x = "Tank", y =  "Usage (mm/day)") +
   geom_boxplot(show.legend = FALSE)
 
