@@ -2,7 +2,7 @@
 title: "ICMP culture collection nitrogen stats"
 subtitle: "Statistical analysis of Chart MVE nitrogen storage tanks"
 author: "Bevan Weir"
-date: 19 Dec 2022
+date: 13 Jan 2023
 format: 
     html: 
       toc: true
@@ -90,7 +90,7 @@ tank2clean.df <- tank2.df  |>
   mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
   mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
   mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
-  mutate(date_time = dmy_hms(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
+  mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
   mutate(tank = "Tank 2") |>
   clean_names()
 
@@ -318,9 +318,57 @@ ggplot(afterjuly.df, aes(x = tank, y = usage, colour = tank, fill = tank)) +
   geom_violin(show.legend = FALSE)
 
 ```
+## Last fills
+This is a list of the last five fills for each tank
+
+```{r tank last fills}
+#| echo: false
+#| message: false
+#| warning: true
+
+#tank 1
+fstatus.1 <- tank1lite.df |> 
+  filter(status != "" &
+           status == "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=5)
+
+kable(fstatus.1, digits=1, "html",
+      caption = "tank 1 last fills") |> 
+      kable_styling("striped", "bordered")
+
+#tank 2
+fstatus.2 <- tank2lite.df |> 
+  filter(status != "" &
+           status == "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=5)
+
+kable(fstatus.2, digits=1, "html",
+      caption = "tank 2 last fills") |> 
+      kable_styling("striped", "bordered")
+
+#tank 3
+fstatus.3 <- tank3lite.df |> 
+  filter(status != "" &
+           status == "F" &
+           status != "BY"
+           ) |> 
+  slice_head(n=5)
+
+kable(fstatus.3, digits=1, "html",
+      caption = "tank 3 last fills") |> 
+      kable_styling("striped", "bordered")
+
+
+```
+
+
 ## Status messages
 
-The tables below list the last 10 status messages for each tank, removing the very common filling, hot gas bypass, and level zeroing codes. A list of the meaning of all event log codes is at the bottom of the page. The most recent event is first.
+The tables below list the last 30 status messages for each tank, removing the very common hot gas bypass and level zeroing codes. A list of the meaning of all event log codes is at the bottom of the page. The most recent event is first.
 
 ```{r tank status}
 #| echo: false
@@ -330,10 +378,10 @@ The tables below list the last 10 status messages for each tank, removing the ve
 #tank 1
 status.1 <- tank1lite.df |> 
   filter(status != "" &
-           status != "F" &
+       #    status != "F" &
            status != "BY"
            ) |> 
-  slice_head(n=10)
+  slice_head(n=30)
 
 kable(status.1, digits=1, "html",
       caption = "status codes tank 1") |> 
@@ -342,10 +390,10 @@ kable(status.1, digits=1, "html",
 #tank 2
 status.2 <- tank2lite.df |> 
   filter(status != "" &
-           status != "F" &
+         #  status != "F" &
            status != "BY"
            ) |> 
-  slice_head(n=10)
+  slice_head(n=30)
 
 kable(status.2, digits=1, "html",
       caption = "status codes tank 2") |> 
@@ -354,10 +402,10 @@ kable(status.2, digits=1, "html",
 #tank 3
 status.3 <- tank3lite.df |> 
   filter(status != "" &
-           status != "F" &
+        #   status != "F" &
            status != "BY"
            ) |> 
-  slice_head(n=10)
+  slice_head(n=30)
 
 kable(status.3, digits=1, "html",
       caption = "status codes tank 3") |> 
