@@ -82,7 +82,7 @@ tank2clean.df <- tank2.df  |>
   mutate(Temp_bottom = str_remove_all(`Temp B`, "�C")) |>
   mutate(Level = str_remove_all(Level, " mm")) |> # removes mm
   mutate(Usage = str_remove_all(Usage, " mm/day")) |> # removes mm/day
-  mutate(date_time = dmy_hms(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
+  mutate(date_time = dmy_hm(paste(Date, Time))) |> # merge date and time columns [tank 2 time is different!]
   mutate(tank = "Tank 2") |>
   clean_names() |>
   glimpse()
