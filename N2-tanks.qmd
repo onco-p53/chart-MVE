@@ -2,7 +2,7 @@
 title: "ICMP culture collection nitrogen stats"
 subtitle: "Statistical analysis of Chart MVE nitrogen storage tanks"
 author: "Bevan Weir"
-date: 9 June 2023
+date: 22 october 2023
 format: 
     html: 
       toc: true
